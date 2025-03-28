@@ -3,7 +3,7 @@ loadrt threads name1=servo-thread period1=1000000
 loadrt hostmot2
 loadrt hm2_eth board_ip=10.10.10.10 config="num_encoders=4 num_pwmgens=1 num_stepgens=0"
 
-# --- Add to servo thread ---
+# --- Add functions to servo thread ---
 addf hm2_7i95T.0.read  servo-thread
 addf motion-controller servo-thread
 addf hm2_7i95T.0.write servo-thread
@@ -16,17 +16,16 @@ net estop-out => hm2_7i95T.0.gpio.001.out
 net x-enable motion.enable => hm2_7i95T.0.gpio.002.out
 net z-enable motion.enable => hm2_7i95T.0.gpio.003.out
 
-# --- X Axis (linear encoder) ---
+# --- X Axis encoder (linear scale) ---
 setp hm2_7i95T.0.encoder.00.counter-mode 1
 net x-pos-fb motion.feedback-position.x <= hm2_7i95T.0.encoder.00.position
 
-# --- Z Axis (linear encoder) ---
+# --- Z Axis encoder (linear scale) ---
 setp hm2_7i95T.0.encoder.01.counter-mode 1
 net z-pos-fb motion.feedback-position.z <= hm2_7i95T.0.encoder.01.position
 
-# --- Spindle Placeholder (RS485 or PWM) ---
-# For now just set up an enable output
+# --- Spindle enable output (placeholder for RS485 control) ---
 net spindle-enable motion.spindle-on => hm2_7i95T.0.gpio.004.out
 
-# --- MPG Placeholder ---
-# We’ll wire hm2_7i95T.0.encoder.02 and .03 for MPG later
+# --- MPG Placeholder (2 encoders available) ---
+# We'll wire encoder.02 and encoder.03 later for MPG
